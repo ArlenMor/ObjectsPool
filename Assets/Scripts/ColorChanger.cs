@@ -6,4 +6,9 @@ public class ColorChanger
     {
         return Random.ColorHSV();
     }
+
+    public void SetColor(Color color, ref MeshRenderer renderer)
+    {
+        renderer.material.color = color;
+    }
 }

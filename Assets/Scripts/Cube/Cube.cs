@@ -5,13 +5,15 @@ using UnityEngine;
 public class Cube : MonoBehaviour
 {
     [SerializeField] private LayerMask _platformLayerMask;
+
     private ColorChanger _colorChanger = new ColorChanger();
     private MeshRenderer _renderer;
 
+    public event Action<Cube> OnCubeCollision;
+
+    public bool IsReleased { get; set; }
     public Color DefaultColor { get; private set; }
     public bool IsDefaultColor { get; private set; }
-
-    public event Action<Cube> OnCubeCollision;
 
     private void Awake()
     {
@@ -37,7 +39,7 @@ public class Cube : MonoBehaviour
 
     public void SetDefaultColor()
     {
-        _renderer.material.color = DefaultColor;
+        _colorChanger.SetColor(DefaultColor, ref _renderer);
         IsDefaultColor = true;
     }
 }

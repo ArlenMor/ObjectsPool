@@ -7,7 +7,8 @@ public class CubeSpawner : MonoBehaviour
     [SerializeField] private Cube _cube;
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Transform _cubeHolder;
-    [SerializeField] private float _repeatRate = 0.2f;
+
+    [SerializeField] private float _repeatRate = 1f;
     [SerializeField] private int _spawnOffset = 4;
     [SerializeField] private int _poolCapacity = 7;
     [SerializeField] private int _poolMaxSize = 7;
@@ -32,7 +33,7 @@ public class CubeSpawner : MonoBehaviour
             collectionCheck: true,
             defaultCapacity: _poolCapacity,
             maxSize: _poolMaxSize
-            ); 
+            );
     }
 
     private void Start()
@@ -50,6 +51,8 @@ public class CubeSpawner : MonoBehaviour
 
     private void SpawnCube(Cube cube)
     {
+        cube.IsReleased = false;
+
         cube.transform.position = new Vector3 (_spawnPoint.position.x + _random.Next(-_spawnOffset, _spawnOffset + 1),
                                                 _spawnPoint.position.y,
                                                 _spawnPoint.position.z + _random.Next(-_spawnOffset, _spawnOffset + 1));
@@ -75,7 +78,11 @@ public class CubeSpawner : MonoBehaviour
 
     private void ReleaseCube(Cube cube)
     {
-        StartCoroutine(WaitUntilRelease(cube));
+        if(cube.IsReleased != true)
+        {
+            cube.IsReleased = true;
+            StartCoroutine(WaitUntilRelease(cube));
+        }
     }
 
     private IEnumerator WaitUntilRelease(Cube cube)
